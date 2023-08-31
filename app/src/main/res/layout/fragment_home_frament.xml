@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Fregments.HomeFrament">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="#FE0000"
+            android:padding="20dp">
+
+                <SearchView
+                    android:id="@+id/search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:background="@drawable/chatbuttonbackground"
+                    android:backgroundTint="@color/white"
+                    android:queryHint="Search blood group"
+                    android:iconifiedByDefault="false"
+               />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="7dp"
+            android:weightSum="5">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/ap"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:background="@drawable/buttonbackground"
+                android:text="A+"
+                android:textColor="@color/white"
+                android:textSize="13dp"
+                android:textStyle="bold" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/an"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:background="@drawable/buttonbackground"
+                android:text="A-"
+                android:textSize="13dp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/op"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:background="@drawable/buttonbackground"
+                android:text="O+"
+                android:textSize="13dp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/on"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:background="@drawable/buttonbackground"
+                android:textColor="@color/white"
+                android:text="O-"
+                android:textSize="13dp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/bp"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:background="@drawable/buttonbackground"
+                android:text="B+"
+                android:textSize="13dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="70dp"
+            android:paddingRight="70dp"
+            android:weightSum="3">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/bn"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:background="@drawable/buttonbackground"
+                android:text="B-"
+                android:textColor="@color/white"
+                android:textSize="13dp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/abp"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:background="@drawable/buttonbackground"
+                android:text="AB+"
+                android:textColor="@color/white"
+                android:textSize="13dp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/abn"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:background="@drawable/buttonbackground"
+                android:text="AB-"
+                android:textColor="@color/white"
+                android:textSize="13dp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/resycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" />
+
+    </LinearLayout>
+
+
+</FrameLayout>

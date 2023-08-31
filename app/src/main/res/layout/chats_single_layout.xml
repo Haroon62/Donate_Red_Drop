@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/recntCard"
+    android:layout_marginTop="8dp"
+    android:background="#52F3F2F2"
+    android:orientation="horizontal"
+    android:padding="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="5dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/user"
+            android:id="@+id/userimagechat"/>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="15dp"
+    android:orientation="vertical"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        >
+        <TextView
+            android:id="@+id/nameuserchat"
+            android:layout_width="wrap_content"
+            android:layout_height="27dp"
+            android:text="Name"
+            android:textStyle="bold"
+            android:textSize="20sp"
+
+            />
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:text="time"
+            android:textColor="#9C9C9C"
+            android:textSize="15sp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+
+            />
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/msg"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:text="msg"
+        android:textColor="#9C9C9C"
+        android:textSize="15sp" />
+
+</LinearLayout>
+
+
+
+</LinearLayout>
+
+
+

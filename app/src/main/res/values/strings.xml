@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Donate Red Drop</string>
+
+    <string name="title_activity_home">Home</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Donate</string>
+    <string name="nav_header_subtitle">Donate and get awsome rewards</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="discription">If you want to create your new account then click on create new account.if you want to logout your account then click on logout button.
+    </string>
+
+    <string name="Profile">Profile</string>
+    <string name="chat">Chats</string>
+    <string name="logout">Logout</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
