@@ -89,9 +89,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.viewholder> {
     public int getItemViewType(int position) {
         ChatModel message = arrayList.get(position);
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Log.d("hjssh",currentUserId);
+        Log.d("hjssh",currentUserId + "  => " + message.getSenderids());
 
-        if (message.getSenderids() ==currentUserId) {
+        if (message.getSenderids().equals(currentUserId)) {
             return VIEW_TYPE_MESSAGE_SENT;
         } else {
             return VIEW_TYPE_MESSAGE_RECEIVED;

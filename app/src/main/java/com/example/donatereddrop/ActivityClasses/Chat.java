@@ -28,10 +28,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
-import com.canhub.cropper.CropImage;
 import com.example.donatereddrop.Adapters.ChatAdapter;
 import com.example.donatereddrop.Models.ChatModel;
 import com.example.donatereddrop.Models.SignupModel;
@@ -221,11 +218,11 @@ public class Chat extends AppCompatActivity {
                         openCamera();
                     }
                 } else if (which == 1) {
-                    if (!checkStoragePermission()){
-                        requestStoragePermission();
-                    }else {
+//                    if (!checkStoragePermission()){
+//                        requestStoragePermission();
+//                    }else {
                         pickFromGallery();
-                    }
+                   // }
 
 
                 }
@@ -242,6 +239,7 @@ public class Chat extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         activityResultLauncher.launch(intent);
+
     }
 
     private void openCamera() {
@@ -264,19 +262,19 @@ public class Chat extends AppCompatActivity {
                 CAMERA_PERMISSION_REQUEST
         );
     }
-    private boolean checkStoragePermission() {
-        int storagePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        return storagePermission == PackageManager.PERMISSION_GRANTED;
-    }
-
-
-    private void requestStoragePermission() {
-        ActivityCompat.requestPermissions(
-                this,
-                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                STORAGE_PERMISSION_REQUEST
-        );
-    }
+//    private boolean checkStoragePermission() {
+//        int storagePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+//        return storagePermission == PackageManager.PERMISSION_GRANTED;
+//    }
+//
+//
+//    private void requestStoragePermission() {
+//        ActivityCompat.requestPermissions(
+//                this,
+//                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+//                STORAGE_PERMISSION_REQUEST
+//        );
+//    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -290,14 +288,14 @@ public class Chat extends AppCompatActivity {
             }
 
         }
-        else if (requestCode == STORAGE_PERMISSION_REQUEST) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Storage permission granted, you can proceed with image operations
-                pickFromGallery(); // Or any other relevant action
-            } else {
-                // Storage permission denied, handle this situation (e.g., show a message)
-            }
-        }
+//        else if (requestCode == STORAGE_PERMISSION_REQUEST) {
+//            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                // Storage permission granted, you can proceed with image operations
+//                pickFromGallery(); // Or any other relevant action
+//            } else {
+//                // Storage permission denied, handle this situation (e.g., show a message)
+//            }
+//        }
     }
 
 }
