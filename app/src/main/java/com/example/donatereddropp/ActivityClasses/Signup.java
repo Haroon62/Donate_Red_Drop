@@ -1,4 +1,4 @@
-package com.example.donatereddrop.ActivityClasses;
+package com.example.donatereddropp.ActivityClasses;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -8,8 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,15 +17,14 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.donatereddrop.Models.SignupModel;
-import com.example.donatereddrop.R;
+import com.example.donatereddropp.Models.SignupModel;
+import com.example.donatereddropp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,6 +33,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -72,6 +70,9 @@ public class Signup extends AppCompatActivity {
         button = findViewById(R.id.signup);
         radioGroup=findViewById(R.id.radiogroup);
 
+
+
+
         auth=FirebaseAuth.getInstance();
         autoCompleteTextView = findViewById(R.id.AutoCompleteTextview);
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
@@ -84,7 +85,7 @@ public class Signup extends AppCompatActivity {
                             filepath = data.getData();
                             circleImageView.setImageURI(filepath);
 
-                            //Log.d("imageee",filepath.getPath());
+                            Log.d("imageee",filepath.toString());
 
 
                         } else {
@@ -104,6 +105,10 @@ public class Signup extends AppCompatActivity {
 
 
 //for drop down list
+
+        String[] items =  {"A+", "A-","B+","B-","O+", "O-","AB+","AB-"};
+        ArrayAdapter<String> adapterItems1 = new ArrayAdapter<>(this,R.layout.textviewforbloodgroups, items);
+        autoCompleteTextView.setAdapter(adapterItems1);
 
 
 
@@ -166,6 +171,8 @@ public class Signup extends AppCompatActivity {
                                     progressBar.setVisibility(View.GONE);
                                     if (task.isSuccessful()) {
                                         String id = FirebaseAuth.getInstance().getUid();
+
+
                                         storageReference = FirebaseStorage.getInstance().getReference(id + ".png");
                                         storageReference.child(filepath.getLastPathSegment());
                                         storageReference.putFile(filepath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -177,32 +184,59 @@ public class Signup extends AppCompatActivity {
 
 
                                                         Log.d("debugddd", uri.toString());
+                                                        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<String> task) {
+                                                                if (!task.isSuccessful()) {
+                                                                    Log.w("FCM Token", "Fetching FCM registration token failed", task.getException());
+                                                                    return;
+                                                                }
 
-                                                        SignupModel signupModel = new SignupModel(id,uri.toString(), name, addreses, blod,selectedRadioButtonText, phonenumer, email1, password,"","");
+                                                                // Get the FCM token
+                                                                String fcmToken = task.getResult();
+                                                                Log.d("FCM Token", "FCM registration token: " + fcmToken);
 
-                                                        FirebaseDatabase.getInstance().getReference("User")
-                                                                .child(id)
-                                                                .setValue(signupModel).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                    @Override
-                                                                    public void onSuccess(Void unused) {
-                                                                        Toast.makeText(Signup.this, "Registered Successfully.",
-                                                                                Toast.LENGTH_SHORT).show();
-                                                                        Intent intent = new Intent(getApplicationContext(), Home.class);
-                                                                        startActivity(intent);
-                                                                        finish();
-                                                                    }
-                                                                }).addOnFailureListener(new OnFailureListener() {
-                                                                    @Override
-                                                                    public void onFailure(@NonNull Exception e) {
-                                                                        Log.d("hgausg",e.toString());
-                                                                        Toast.makeText(Signup.this, e.getMessage(),
-                                                                                Toast.LENGTH_SHORT).show();
-                                                                    }
-                                                                });
+                                                                SignupModel signupModel = new SignupModel(id,uri.toString(), name, addreses, blod,selectedRadioButtonText, phonenumer, email1, password,"","",fcmToken);
+
+                                                                FirebaseDatabase.getInstance().getReference("User")
+                                                                        .child(id)
+                                                                        .setValue(signupModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                            @Override
+                                                                            public void onSuccess(Void unused) {
+                                                                                Toast.makeText(Signup.this, "Registered Successfully.",
+                                                                                        Toast.LENGTH_SHORT).show();
+                                                                                Intent intent = new Intent(getApplicationContext(), Home.class);
+                                                                                startActivity(intent);
+                                                                                finish();
+                                                                            }
+                                                                        }).addOnFailureListener(new OnFailureListener() {
+                                                                            @Override
+                                                                            public void onFailure(@NonNull Exception e) {
+                                                                                Log.d("hgausg",e.toString());
+                                                                                Toast.makeText(Signup.this, e.getMessage(),
+                                                                                        Toast.LENGTH_SHORT).show();
+                                                                            }
+                                                                        });
+
+                                                            }
+                                                        });
+
+
 
 
                                                     }
+                                                }).addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Log.d("hgausg",e.toString());
+                                                    }
                                                 });
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d("hgausg",e.toString());
+
                                             }
                                         });
                                     } else {
@@ -211,10 +245,20 @@ public class Signup extends AppCompatActivity {
 
                                     }
                                 }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.d("hgausg",e.toString());
+                                }
                             });
                 }
             }
 
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

@@ -1,33 +1,42 @@
 {
   "project_info": {
-    "project_number": "436035905628",
-    "project_id": "donate-red-drop",
-    "storage_bucket": "donate-red-drop.appspot.com"
+    "project_number": "596048539181",
+    "firebase_url": "https://donate-red-drop-baee0-default-rtdb.firebaseio.com",
+    "project_id": "donate-red-drop-baee0",
+    "storage_bucket": "donate-red-drop-baee0.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:436035905628:android:d2b0bb8fe708d71170de99",
+        "mobilesdk_app_id": "1:596048539181:android:32c258692a97d1013dd2a4",
         "android_client_info": {
-          "package_name": "com.example.donatereddrop"
+          "package_name": "com.example.donatereddropp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "436035905628-82sb34g42nqb5cg7juqbjqjqufbpntt6.apps.googleusercontent.com",
+          "client_id": "596048539181-7s4ek02lqkg5e3hepocgdomufhd1jbgq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.donatereddropp",
+            "certificate_hash": "ce097a60b70f7a2dc77e492e1f546b6beb1d0ecd"
+          }
+        },
+        {
+          "client_id": "596048539181-0bauohnjho3dedsom5q41mto9vk5qc7g.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD_bsjwBcdEe9C5ChHb33hfProMBbg3ZEk"
+          "current_key": "AIzaSyB1TnTn17QY7SYy0cZ5Wpz3h4rVFmsZSLc"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "436035905628-82sb34g42nqb5cg7juqbjqjqufbpntt6.apps.googleusercontent.com",
+              "client_id": "596048539181-0bauohnjho3dedsom5q41mto9vk5qc7g.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

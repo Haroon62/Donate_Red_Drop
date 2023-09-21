@@ -1,4 +1,4 @@
-package com.example.donatereddrop.Fregments;
+package com.example.donatereddropp.Fregments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,9 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.donatereddrop.ActivityClasses.EditProfile;
-import com.example.donatereddrop.Models.SignupModel;
-import com.example.donatereddrop.R;
+import com.example.donatereddropp.ActivityClasses.EditProfile;
+import com.example.donatereddropp.Models.SignupModel;
+import com.example.donatereddropp.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

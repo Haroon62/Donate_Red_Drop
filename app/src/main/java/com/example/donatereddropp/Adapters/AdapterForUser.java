@@ -1,4 +1,4 @@
-package com.example.donatereddrop.Adapters;
+package com.example.donatereddropp.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,9 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.donatereddrop.ActivityClasses.Chat;
-import com.example.donatereddrop.R;
-import com.example.donatereddrop.Models.SignupModel;
+import com.example.donatereddropp.ActivityClasses.Chat;
+import com.example.donatereddropp.R;
+import com.example.donatereddropp.Models.SignupModel;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 

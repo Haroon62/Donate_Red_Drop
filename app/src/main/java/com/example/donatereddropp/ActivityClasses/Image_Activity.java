@@ -1,4 +1,4 @@
-package com.example.donatereddrop.ActivityClasses;
+package com.example.donatereddropp.ActivityClasses;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,9 +10,9 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
-import com.example.donatereddrop.Models.ChatModel;
-import com.example.donatereddrop.Models.SignupModel;
-import com.example.donatereddrop.R;
+import com.example.donatereddropp.Models.ChatModel;
+import com.example.donatereddropp.Models.SignupModel;
+import com.example.donatereddropp.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;

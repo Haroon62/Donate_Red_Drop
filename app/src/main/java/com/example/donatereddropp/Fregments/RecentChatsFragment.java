@@ -1,4 +1,4 @@
-package com.example.donatereddrop.Fregments;
+package com.example.donatereddropp.Fregments;
 
 import android.os.Bundle;
 
@@ -12,10 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.donatereddrop.Adapters.AdapterForRecentChats;
-import com.example.donatereddrop.Models.ChatModel;
-import com.example.donatereddrop.Models.SignupModel;
-import com.example.donatereddrop.R;
+import com.example.donatereddropp.Adapters.AdapterForRecentChats;
+import com.example.donatereddropp.Models.ChatModel;
+import com.example.donatereddropp.Models.SignupModel;
+import com.example.donatereddropp.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

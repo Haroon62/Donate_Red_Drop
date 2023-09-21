@@ -1,4 +1,4 @@
-package com.example.donatereddrop.Models;
+package com.example.donatereddropp.Models;
 
 import java.io.Serializable;
 

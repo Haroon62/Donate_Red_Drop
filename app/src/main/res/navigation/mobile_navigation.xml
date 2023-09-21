@@ -6,22 +6,22 @@
     app:startDestination="@id/home_frament">
     <fragment
         android:id="@+id/profile_fragment"
-        android:name="com.example.donatereddrop.Fregments.ProfileFragment"
+        android:name="com.example.donatereddropp.Fregments.ProfileFragment"
         android:label="Profile"
         tools:layout="@layout/fragment_profile_fragment" />
     <fragment
         android:id="@+id/recentChats_fragment"
-        android:name="com.example.donatereddrop.Fregments.RecentChatsFragment"
+        android:name="com.example.donatereddropp.Fregments.RecentChatsFragment"
         android:label="Chats"
         tools:layout="@layout/fragment_recent_chats" />
     <fragment
         android:id="@+id/logout_fragment"
-        android:name="com.example.donatereddrop.Fregments.LogoutFragment"
+        android:name="com.example.donatereddropp.Fregments.LogoutFragment"
         android:label="Logout"
         tools:layout="@layout/fragment_logout_fragment" />
     <fragment
         android:id="@+id/home_frament"
-        android:name="com.example.donatereddrop.Fregments.HomeFrament"
+        android:name="com.example.donatereddropp.Fregments.HomeFrament"
         android:label="Home"
         tools:layout="@layout/fragment_home_frament" />
 </navigation>

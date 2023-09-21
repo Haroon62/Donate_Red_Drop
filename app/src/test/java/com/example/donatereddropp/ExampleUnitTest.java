@@ -1,4 +1,4 @@
-package com.example.donatereddrop;
+package com.example.donatereddropp;
 
 import org.junit.Test;
 

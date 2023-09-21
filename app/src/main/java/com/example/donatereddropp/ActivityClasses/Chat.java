@@ -1,11 +1,10 @@
-package com.example.donatereddrop.ActivityClasses;
+package com.example.donatereddropp.ActivityClasses;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -29,10 +28,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
-import com.example.donatereddrop.Adapters.ChatAdapter;
-import com.example.donatereddrop.Models.ChatModel;
-import com.example.donatereddrop.Models.SignupModel;
-import com.example.donatereddrop.R;
+import com.example.donatereddropp.Adapters.ChatAdapter;
+import com.example.donatereddropp.Models.ChatModel;
+import com.example.donatereddropp.Models.SignupModel;
+import com.example.donatereddropp.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,8 +42,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -86,6 +91,13 @@ public class Chat extends AppCompatActivity {
         message = findViewById(R.id.message);
         insertimage=findViewById(R.id.insertimage);
         chatlist = new ArrayList<>();
+
+
+
+        // Get the current user's FCM token and save it to your database.
+
+
+
 
         cameraPermission = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -188,14 +200,39 @@ public class Chat extends AppCompatActivity {
                     String messageID = databaseReference.push().getKey();
                     String receivrrID=model.getId();
 
+                    DatabaseReference receiverUserReference = FirebaseDatabase.getInstance().getReference("Users")
+                            ;
+
+                    receiverUserReference.child(model.getFcmtoken()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                String receiverFCMToken = dataSnapshot.getValue(String.class);
+
+                                // Now, you have the receiver's FCM token.
+                                // You can use it to send an FCM notification to the receiver.
+
+                                sendFCMNotification(receiverFCMToken, "New Message", "You have received a new message!");
+
+                                editText.setText("");
+                            }
+                        }
+
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            // Handle any errors here.
+                        }
+                    });
+
 
                     String cruntuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
                     ChatModel roomModel = new ChatModel(msgtext, cruntuser, System.currentTimeMillis(), receivrrID,messageID,purlofa,"");
                     databaseReference.child(messageID).setValue(roomModel);
                     DatabaseReference otheruser =database.getReference("Chats")
-                           .child(model.getId()).child(FirebaseAuth.getInstance()
-                            .getCurrentUser().getUid());
-                   otheruser.child(messageID).setValue(roomModel);
+                            .child(model.getId()).child(FirebaseAuth.getInstance()
+                                    .getCurrentUser().getUid());
+                    otheruser.child(messageID).setValue(roomModel);
                     editText.setText("");
 
                 }
@@ -232,8 +269,6 @@ public class Chat extends AppCompatActivity {
         });
         builder.create().show();
     }
-
-
 
     private void pickFromGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK);
@@ -297,6 +332,18 @@ public class Chat extends AppCompatActivity {
 //            }
 //        }
     }
+    private void sendFCMNotification(String receiverFCMToken, String title, String body) {
+        // Create a message payload.
+        Map<String, String> data = new HashMap<>();
+        data.put("title", title);
+        data.put("body", body);
+
+        // Send the FCM message.
+        FirebaseMessaging.getInstance().send(new RemoteMessage.Builder(receiverFCMToken)
+                .setData(data)
+                .build());
+    }
+
 
 }
 

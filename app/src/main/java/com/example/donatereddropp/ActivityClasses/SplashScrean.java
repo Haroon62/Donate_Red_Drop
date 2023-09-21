@@ -1,4 +1,4 @@
-package com.example.donatereddrop.ActivityClasses;
+package com.example.donatereddropp.ActivityClasses;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.example.donatereddrop.R;
+import com.example.donatereddropp.R;
 
 public class SplashScrean extends AppCompatActivity {
 

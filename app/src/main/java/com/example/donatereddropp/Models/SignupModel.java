@@ -1,16 +1,18 @@
-package com.example.donatereddrop.Models;
+package com.example.donatereddropp.Models;
 
 import java.io.Serializable;
 
 public class SignupModel implements Serializable {
 
-    String id, purl,name,bgroup,donatee,phone,emaiil,paswrd,addresmodel,street,gender;
+    String id, purl,name,bgroup,donatee,phone,emaiil,paswrd,addresmodel,street,gender,fcmtoken;
 
     public SignupModel() {
 
     }
 
-    public SignupModel(String id,String purl, String name, String addresmodel, String bgroup, String donatee , String phone, String emaiil, String paswrd,String street,String gender) {
+    public SignupModel(String id,String purl, String name, String addresmodel,
+                       String bgroup, String donatee ,
+                       String phone, String emaiil, String paswrd,String street,String gender,String fcmtoken) {
 
         this.id=id;
         this.purl=purl;
@@ -23,6 +25,15 @@ public class SignupModel implements Serializable {
         this.paswrd = paswrd;
         this.street=street;
         this.gender=gender;
+        this.fcmtoken=fcmtoken;
+    }
+
+    public String getFcmtoken() {
+        return fcmtoken;
+    }
+
+    public void setFcmtoken(String fcmtoken) {
+        this.fcmtoken = fcmtoken;
     }
 
     public String getGender() {

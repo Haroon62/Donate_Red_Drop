@@ -1,4 +1,4 @@
-package com.example.donatereddrop.ActivityClasses;
+package com.example.donatereddropp.ActivityClasses;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,9 +6,9 @@ import android.util.Log;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
-import com.example.donatereddrop.Models.SignupModel;
-import com.example.donatereddrop.R;
-import com.example.donatereddrop.databinding.ActivityHomeBinding;
+import com.example.donatereddropp.Models.SignupModel;
+import com.example.donatereddropp.R;
+import com.example.donatereddropp.databinding.ActivityHomeBinding;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
