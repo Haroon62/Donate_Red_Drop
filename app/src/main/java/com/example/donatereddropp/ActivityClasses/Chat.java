@@ -7,6 +7,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.ThemedSpinnerAdapter;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,12 +22,22 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.donatereddropp.Adapters.ChatAdapter;
 import com.example.donatereddropp.Models.ChatModel;
@@ -45,17 +56,18 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Queue;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Chat extends AppCompatActivity {
-
-
     private static final int CAMERA_PERMISSION_REQUEST = 100;
-    private static final int STORAGE_PERMISSION_REQUEST = 200;
     private static final int IMAGE_PICKCAMERA_REQUEST = 400;
     String cameraPermission[];
     String storagePermission[];
@@ -69,6 +81,8 @@ public class Chat extends AppCompatActivity {
     ImageButton back, sendbtn;
     CircleImageView profileimage;
     TextView username;
+
+   public static String msgtext;
     Uri filepath;
     ActivityResultLauncher<Intent> activityResultLauncher;
     ActivityResultLauncher<Intent> cameraLauncher;
@@ -88,16 +102,9 @@ public class Chat extends AppCompatActivity {
         chatresycle = findViewById(R.id.chatresycler);
         profileimage = findViewById(R.id.chat_profile_pic);
         username = findViewById(R.id.chatusername);
-        message = findViewById(R.id.message);
+       message  = findViewById(R.id.message);
         insertimage=findViewById(R.id.insertimage);
         chatlist = new ArrayList<>();
-
-
-
-        // Get the current user's FCM token and save it to your database.
-
-
-
 
         cameraPermission = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -165,8 +172,6 @@ public class Chat extends AppCompatActivity {
             Glide.with(Chat.this).load(model.getPurl()).into(profileimage);
         }
 
-
-
         databaseReference = databaseReference
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(model.getId());
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -192,39 +197,47 @@ public class Chat extends AppCompatActivity {
         sendbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String msgtext = message.getEditText().getText().toString().trim();
+                msgtext = message.getEditText().getText().toString().trim();
                 String purlofa=model.getPurl();
 
                 if (!msgtext.isEmpty()) {
 
+                    Intent serviceIntent = new Intent(Chat.this, ServiceClass.class);
+                    serviceIntent.putExtra("message", msgtext);
+                    startService(serviceIntent);
+
                     String messageID = databaseReference.push().getKey();
                     String receivrrID=model.getId();
 
-                    DatabaseReference receiverUserReference = FirebaseDatabase.getInstance().getReference("Users")
-                            ;
-
-                    receiverUserReference.child(model.getFcmtoken()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    DatabaseReference receiverUserReference = FirebaseDatabase.getInstance().getReference();
+                    receiverUserReference.child("User").child(model.getId()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                            Log.d("hssdhsijs", dataSnapshot.toString());
                             if (dataSnapshot.exists()) {
-                                String receiverFCMToken = dataSnapshot.getValue(String.class);
+                                DataSnapshot fcmTokenSnapshot = dataSnapshot.child("fcmtoken"); // Replace "id" with the actual key where the FCM token is stored
 
-                                // Now, you have the receiver's FCM token.
-                                // You can use it to send an FCM notification to the receiver.
+                                if (fcmTokenSnapshot.exists()) {
+                                    String receiverFCMToken = fcmTokenSnapshot.getValue(String.class);
 
-                                sendFCMNotification(receiverFCMToken, "New Message", "You have received a new message!");
-
-                                editText.setText("");
+                                    if (receiverFCMToken != null) {
+                                        Log.d("hssdhsijs", receiverFCMToken);
+                                        FcmNotificationSender notificationSender = new FcmNotificationSender(receiverFCMToken, "Red Drop", "you have received a message", Chat.this);
+                                        notificationSender.SendNotifications(model.getId());
+                                    } else {
+                                        Log.d("hssdhsijs", "FCM token not found in user data");
+                                    }
+                                } else {
+                                    Log.d("hssdhsijs", "FCM token key not found in user f data");
+                                }
                             }
                         }
-
-
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
-                            // Handle any errors here.
+
                         }
                     });
-
 
                     String cruntuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
                     ChatModel roomModel = new ChatModel(msgtext, cruntuser, System.currentTimeMillis(), receivrrID,messageID,purlofa,"");
@@ -235,6 +248,8 @@ public class Chat extends AppCompatActivity {
                     otheruser.child(messageID).setValue(roomModel);
                     editText.setText("");
 
+                }else {
+                    Toast.makeText(Chat.this, "Can't Send empty message", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -332,17 +347,49 @@ public class Chat extends AppCompatActivity {
 //            }
 //        }
     }
-    private void sendFCMNotification(String receiverFCMToken, String title, String body) {
-        // Create a message payload.
-        Map<String, String> data = new HashMap<>();
-        data.put("title", title);
-        data.put("body", body);
-
-        // Send the FCM message.
-        FirebaseMessaging.getInstance().send(new RemoteMessage.Builder(receiverFCMToken)
-                .setData(data)
-                .build());
-    }
+//    private void  sendFCMNotification(String receiverFCMToken, String title, String body) {
+//
+//         RequestQueue requestQueue = Volley.newRequestQueue(this);
+//        JSONObject mainObj = new JSONObject();
+//        try {
+//            mainObj.put("to", receiverFCMToken);
+//            JSONObject notiObj = new JSONObject();
+//            notiObj.put("title", title);
+//            notiObj.put("body", body);
+//            notiObj.put("type", 0);
+//
+//            mainObj.put("notification", notiObj);
+//
+//
+//            Log.d("hjsj", mainObj.toString());
+//
+//        } catch (JSONException e) {
+//            throw new RuntimeException(e);
+//        }
+//        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, mainObj, new Response.Listener<JSONObject>() {
+//            @Override
+//            public void onResponse(JSONObject response) {
+//                Log.d("notirespo", response.toString());
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.d("notirespo", error.getMessage()+" ");
+//            }
+//        }) {
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                Map<String, String> header = new HashMap<>();
+//                header.put("Content-Type", "application/json");
+//                header.put("Authorization", Key);
+//                return header;
+//            }
+//        };
+//
+//        requestQueue.add(request);
+//
+//
+//    }
 
 
 }
