@@ -122,4 +122,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.viewholder> {
         SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a", Locale.getDefault());
         return sdf.format(new Date(timestamp));
     }
-}
+
+    }
+

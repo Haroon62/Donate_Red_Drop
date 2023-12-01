@@ -100,7 +100,39 @@
         }
 
         private String getFormattedTime(long timestamp) {
-            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a", Locale.getDefault());
-            return sdf.format(new Date(timestamp));
+            long now = System.currentTimeMillis();
+            long diff = now - timestamp;
+
+            // Constants to define time intervals in milliseconds
+            long minuteInMillis = 60 * 1000;
+            long hourInMillis = 60 * minuteInMillis;
+            long dayInMillis = 24 * hourInMillis;
+
+            if (diff < minuteInMillis) {
+                return "Just now";
+            } else if (diff < hourInMillis) {
+                int minutesAgo = (int) (diff / minuteInMillis);
+                return minutesAgo + (minutesAgo == 1 ? " minute ago" : " minutes ago");
+            } else if (diff < dayInMillis) {
+                int hoursAgo = (int) (diff / hourInMillis);
+                int remainingMinutes = (int) ((diff % hourInMillis) / minuteInMillis);
+                StringBuilder result = new StringBuilder();
+                if (hoursAgo > 0) {
+                    result.append(hoursAgo).append(hoursAgo == 1 ? " hour" : " hours");
+                }
+                if (remainingMinutes > 0) {
+                    result.append(" ").append(remainingMinutes).append(remainingMinutes == 1 ? " minute" : " minutes");
+                }
+                return result.append(" ago").toString();
+            } else if (diff < 2 * dayInMillis) {
+                return "Yesterday";
+            } else if (diff < 3 * dayInMillis) {
+                return "2 days ago";
+            } else {
+                // Format the timestamp as "dd/MM/yyyy hh:mm a" for older dates
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault());
+                return sdf.format(new Date(timestamp));
+            }
         }
+
     }

@@ -5,28 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FDF2F5"
+    android:id="@+id/layoutset"
     tools:context=".ActivityClasses.SplashScrean">
 
-    <ImageView
-        android:id="@+id/image"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieAnimationView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:src="@drawable/logo" />
+        android:layout_height="match_parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/blood"/>
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/image"
-        android:fontFamily="serif"
-        android:text="Donate"
-        android:textAlignment="center"
-        android:layout_marginBottom="10dp"
-        android:textColor="#DA1628"
-        android:textSize="50dp"
-        android:textStyle="bold"
-      />
 
 
 </RelativeLayout>

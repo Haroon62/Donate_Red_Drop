@@ -169,7 +169,7 @@ public class Chat extends AppCompatActivity {
             model = (SignupModel) getIntent().getSerializableExtra("name");
             username.setText(model.getName());
             Log.d("dhjjsa", model.toString());
-            Glide.with(Chat.this).load(model.getPurl()).into(profileimage);
+                Glide.with(Chat.this).load(model.getPurl()).into(profileimage);
         }
 
         databaseReference = databaseReference
@@ -184,7 +184,9 @@ public class Chat extends AppCompatActivity {
                     chatlist.add(model1);
                 }
                 chatAdapter=new ChatAdapter(Chat.this,chatlist);
+
                 chatresycle.setAdapter(chatAdapter);
+                chatresycle.smoothScrollToPosition(chatAdapter.getItemCount() - 1);
                 chatAdapter.notifyDataSetChanged();
             }
 
