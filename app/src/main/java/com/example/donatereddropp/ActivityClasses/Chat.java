@@ -179,15 +179,14 @@ public class Chat extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 chatlist.clear();
                 chatlist=new ArrayList<>();
-                for (DataSnapshot snapshot1:snapshot.getChildren()){
-                    ChatModel model1=snapshot1.getValue(ChatModel.class);
+                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                    ChatModel model1 = snapshot1.getValue(ChatModel.class);
                     chatlist.add(model1);
                 }
-                chatAdapter=new ChatAdapter(Chat.this,chatlist);
-
+                chatAdapter = new ChatAdapter(Chat.this, chatlist);
                 chatresycle.setAdapter(chatAdapter);
-                chatresycle.smoothScrollToPosition(chatAdapter.getItemCount() - 1);
                 chatAdapter.notifyDataSetChanged();
+                scrollToLastPositionIfNeeded();
             }
 
             @Override
@@ -201,8 +200,8 @@ public class Chat extends AppCompatActivity {
             public void onClick(View v) {
                 msgtext = message.getEditText().getText().toString().trim();
                 String purlofa=model.getPurl();
+                 if (!msgtext.isEmpty()) {
 
-                if (!msgtext.isEmpty()) {
 
                     Intent serviceIntent = new Intent(Chat.this, ServiceClass.class);
                     serviceIntent.putExtra("message", msgtext);
@@ -241,14 +240,30 @@ public class Chat extends AppCompatActivity {
                         }
                     });
 
-                    String cruntuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    ChatModel roomModel = new ChatModel(msgtext, cruntuser, System.currentTimeMillis(), receivrrID,messageID,purlofa,"");
-                    databaseReference.child(messageID).setValue(roomModel);
-                    DatabaseReference otheruser =database.getReference("Chats")
-                            .child(model.getId()).child(FirebaseAuth.getInstance()
-                                    .getCurrentUser().getUid());
-                    otheruser.child(messageID).setValue(roomModel);
-                    editText.setText("");
+                     String cruntuser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                     ChatModel roomModel = new ChatModel(msgtext, cruntuser, System.currentTimeMillis(), receivrrID,messageID,purlofa,"");
+                     databaseReference.child(messageID).setValue(roomModel);
+                     DatabaseReference otheruser =database.getReference("Chats")
+                             .child(model.getId()).child(FirebaseAuth.getInstance()
+                                     .getCurrentUser().getUid());
+                     otheruser.child(messageID).setValue(roomModel);
+                     editText.setText("");
+
+                     if (chatAdapter.getItemCount() == 0) {
+                         // If no existing messages, create a new adapter with the new message
+                         chatlist.add(roomModel);
+                         chatAdapter = new ChatAdapter(Chat.this, chatlist);
+                         chatresycle.setAdapter(chatAdapter);
+                         chatAdapter.notifyDataSetChanged();
+                         scrollToLastPositionIfNeeded();
+                     } else {
+                         // If there are existing messages, add the new message and notify the adapter
+                         chatlist.add(roomModel);
+                         chatAdapter.notifyDataSetChanged();
+                         scrollToLastPositionIfNeeded();
+                     }
+
+
 
                 }else {
                     Toast.makeText(Chat.this, "Can't Send empty message", Toast.LENGTH_SHORT).show();
@@ -393,7 +408,11 @@ public class Chat extends AppCompatActivity {
 //
 //    }
 
-
+    private void scrollToLastPositionIfNeeded() {
+        if (chatAdapter != null && chatAdapter.getItemCount() > 0) {
+            chatresycle.smoothScrollToPosition(chatAdapter.getItemCount() - 1);
+        }
+    }
 }
 
 
